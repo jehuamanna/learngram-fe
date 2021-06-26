@@ -2,15 +2,15 @@ import styled from "styled-components";
 import { theme } from "../../common/constants/theme";
 
 export const InputArea = styled.div`
-  margin-top: 50px;
+  margin: 50px 0px;
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 `;
 
 export const StyledInput = styled.input`
-  width: 50%;
+  width: calc( 800px + (75vw - 800px) / 2 );
   border: 1px solid ${theme.background};
   border-radius: 10px;
   padding: 30px;
@@ -26,14 +26,14 @@ export const StyledInput = styled.input`
 export const StyledLabel = styled.label`
   background-color: ${theme.background};
   color: white;
-  padding: 14px 30px;
-  font-size: 30px;
+  padding: 22px 0px;
+  font-size: 20px;
   border-radius: 5px;
   cursor: pointer;
-  margin-left: 15px;
   text-align: center;
   box-sizing: border-box;
-  height: 70px; 
+  height: 70px;
+  width: 200px; 
 `;
 
 export const VideoArea = styled.div` 
@@ -46,25 +46,30 @@ export const VideoListArea = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  width: 67%;
   margin: 0 auto;
 `;
 
 export const UploadButton = styled.a`
   padding: 14px 30px;
+  width: 200px;
   margin-left: 15px;
   border-radius: 5px;
   font-size: 30px;
   background-color: ${theme.background};
   color: white;
   cursor: pointer;
+  text-align: center;
+  height: 70px;
+  box-sizing: border-box;
 `;
 
-export const ClearButton = styled.a`
-  margin-left: 15px;
-  border-radius: 5px;
+export const ClearButton = styled.div`
   font-size: 30px;
-  cursor: ${({ disabled }) => disabled ? "not-allowed": "pointer"};
+  position: absolute;
+  cursor: pointer;
+  right: 20px;
+  top: 18px;
+  left: calc( 800px + (75vw - 800px) / 2 - 80px );
 `;
 
 export const Empty = styled.p`
@@ -74,11 +79,8 @@ export const Empty = styled.p`
 `;
 
 export const Container = styled.div`
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  cursor: pointer;
+  width: 75vw;
+  margin: 0px auto;
 `;
 
 export const Thumb = styled.div`
@@ -101,4 +103,28 @@ export const Tray = styled.div`
   align-items: center;
   width: 100%;
   color: red;
+`;
+
+export const Input = styled.div`
+  position: relative;
+  display: flex;
+  outline: none;
+  width: 75%;
+  font-size: 26px;
+  height: 70px;
+  box-sizing: border-box;
+`;
+
+export const ThumbnailContainer = styled.div`
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  cursor: pointer;
+`;
+
+
+export const VideoDisplayArea = styled.div`
+  height: 650px;
+  width: 100%;
 `;

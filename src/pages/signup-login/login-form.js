@@ -15,6 +15,7 @@ import {
 import {emailValidatorRE} from '../../common/utils/validations'
 import Close from "../../common/assets/icons/close.svg";
 import { AuthContext } from "../../common/contexts/auth-context";
+import { LEARNGRAM_ACCESS_KEY } from "../../common/constants/constants";
 
 export const LoginForm = () => {
 
@@ -27,15 +28,14 @@ export const LoginForm = () => {
   const [isValidEmailErrorMsg, setIsValidEmailErrorMsg] = useState(false)
   const [emailErrorMsg, setEmailErrorMsg] = useState('')
   const [redirectToHome, setRedirectToHome] = useState(false)
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState("Please Enter Password")
 
   useEffect(() => {
     inputEl && inputEl.current.focus()
   },[])
   
   useEffect(() => {
-    if(isLoggedIn){
-      setRedirectToHome(true)
-    }    
+    isLoggedIn && setRedirectToHome(true)
   },[isLoggedIn])
 
   const handleLogin = async () => {
@@ -54,14 +54,25 @@ export const LoginForm = () => {
     if(!email || !password || !isValidEmail){
       return
     }
-    const { success } = await Login({ email, password });
+    const { success, responseType, message } = await Login({ email, password });
     if(success) {
-      setIsLoggedIn(true)
-      setRedirectToHome(true)
+      if(responseType === 'invalid-user'){
+        setIsPasswordErrorMsg(true)
+        setPasswordErrorMessage('Invalid Username/Password')
+        setPassword("")
+      } else if(responseType === 'nonexistent-user'){
+        setIsPasswordErrorMsg(true)
+        setPasswordErrorMessage('User does not exist. Please signup')
+        setPassword("")
+      } else {
+        setIsLoggedIn(true)
+      }
     }
+    
   }
 
   const handlePassword = (e) => {
+    setPasswordErrorMessage('Please Enter Password')
     if(e.target.value){
       setIsPasswordErrorMsg(false)
     } else {
@@ -126,7 +137,7 @@ export const LoginForm = () => {
         {isPasswordErrorMsg ? 
               <ErrorDiv style={{ display: "flex" }} >
                 <SuccessIcon login={true} src={ Close} width={15} />
-               Please Enter Password
+               {passwordErrorMessage}
               </ErrorDiv>: null}
           </ErrorMessage>     
         </>

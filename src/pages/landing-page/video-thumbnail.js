@@ -1,7 +1,7 @@
 import React from "react";
 import Play from "../../common/assets/icons/play.svg";
 import {
-  Container,
+  ThumbnailContainer,
   Thumb,
   Tray
 } from "./styled-components"
@@ -10,13 +10,13 @@ import {
 export const VideoThumbnail = ({ title, deleteAction, onClick }) => {
 
   return (
-    <Container>
+    <ThumbnailContainer>
       <Thumb onClick={onClick}>
         <p>{title}</p>
         <img src={Play} width={30} alt="play" />
       </Thumb>
       <Tray>
       </Tray>
-    </Container>
+    </ThumbnailContainer>
   );
 }

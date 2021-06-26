@@ -49,6 +49,10 @@ export const Login = async (body) => {
     if(res && res.status === 200) {
       localStorage.setItem(LEARNGRAM_ACCESS_KEY, res.data.jwt);
       return { success: true, data: res.data };
+    } else if(res.message === "User not found or password incorrect. Please try again.") {
+        return { success: true, responseType: "invalid-user", message: res.message}
+    } else if(res.message === "User not verified yet. Please signup again.") {
+        return { success: true, responseType: "nonexistent-user", message: res.message}
     } else {
       return { success: false };
     }
