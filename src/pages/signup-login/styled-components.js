@@ -31,7 +31,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  transform: translate(50%, 75px)
+  transform: translate(50%, 75px);
 `;
 
 export const CompanyName= styled.p`
@@ -127,4 +127,11 @@ export const Spinner = styled.div`
   align-items: center;
   width: 100vw;
   height: 100vh;
+`;
+
+export const Message = styled.div`
+  width: 100%;
+  height: 20px;
+  margin-top: 5px;
+  color: red;
 `;

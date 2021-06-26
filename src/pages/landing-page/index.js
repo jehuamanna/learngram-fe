@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Navbar } from "../../common/components/navbar/navbar";
 import { VideoThumbnail } from "./video-thumbnail";
-import { createVideo, listVideos, deleteVideo } from "../../common/actions/video";
+import { createVideo, listVideos } from "../../common/actions/video";
 import {
   InputArea,
   StyledInput,
@@ -16,6 +16,7 @@ export const LandingPage = () => {
 
   const FILE_SIZE_LIMIT = 1024*1024;
 
+  const videoRef = useRef(null)
   const [file, setFile] = useState(null);
   const [fileName, setFileName] = useState('');
   const [fileSource, setFileSource] = useState(null);
@@ -23,6 +24,29 @@ export const LandingPage = () => {
   const [loading, setLoading] = useState(false);
   const [blockActions, setBlockActions] = useState(false);
   const [videos, setVideos] = useState([]);
+  const [originalVideos, setOriginalVideos] = useState([])
+
+  useEffect(() => {
+    async function fetchData() {
+      const { success, data}  = await listVideos()
+      if(success){
+        console.log(data)
+        setVideos(data.videos)
+        setOriginalVideos(data.videos)
+      }
+    }
+
+    fetchData()
+  }, [])
+  
+  
+  const handleSearch = (e) => {
+    const searchKey = e.target.value
+    setFileName(searchKey)
+    const filteredVideos = originalVideos.filter(video => video.fileName.toLowerCase().includes(searchKey.toLowerCase()))
+    setVideos(filteredVideos)
+  }
+
 
   const handleFileUpload = e => {
     const file = e.target.files[0];
@@ -31,22 +55,13 @@ export const LandingPage = () => {
       return;
     }
     setFile(file);
-    setFileSource(URL.createObjectURL(file));
-    setFileType(file.type);
-    setFileName(file.name);
   }
-
-  const handleVideoDelete = async (id) => {
-    setLoading(true);
-    const { success } = await deleteVideo(id);
-    success && alert("Video deleted successfully!");
-    handleClear();
-  };
-
+  
   const handleVideoClick = (title, url, type) => {
     setFileName(title);
     setFileSource(url);
     setFileType(type);
+    videoRef && videoRef.current && videoRef.current.load()
   }
 
   const handleClear = () => {
@@ -55,19 +70,29 @@ export const LandingPage = () => {
     setFileType(null);
   };
 
+  const uploadFile = async () => {
+    const formData = new FormData();
+    formData.append('file', file);
+    const {success, data} = await createVideo(formData)
+    if(success) {
+      console.log(data)
+      setLoading(false)
+    }
+  }
+
   return (
     <div>
       <Navbar />
       <InputArea>
-        <StyledInput value={fileName} onChange={e => setFileName(e.target.value)} />
+        <StyledInput value={fileName} onChange={handleSearch} />
         <>
           <input type="file" id="actual-btn" accept="video/*" onChange={handleFileUpload} hidden/>
           {!fileSource
             ? <StyledLabel for="actual-btn">Upload Lecture</StyledLabel>
             : (
               <>
-                <UploadButton onClick={() => {}} disabled={loading || blockActions} >
-                  {loading ? 'Uploading...' : 'Upload to DB'}
+                <UploadButton onClick={uploadFile} disabled={loading || blockActions} >
+                  {loading ? 'Uploading...' : 'Upload'}
                 </UploadButton>
                 <ClearButton onClick={handleClear} disabled={loading || blockActions}>
                   Clear
@@ -80,19 +105,18 @@ export const LandingPage = () => {
       {fileSource
       && (
         <VideoArea>
-          <video width={800} height={500} controls>
+          <video ref={videoRef} width={800} height={500} controls>
             <source src={fileSource} type={fileType} />
           </video>
         </VideoArea>
       )}
       <VideoListArea>
         {videos.length > 0
-          ? videos.map(({ _id, title, storage_url, content_type }) => (
+          ? videos.map(({ _id, fileName, location, mimetype}) => (
               <VideoThumbnail
                 key={_id}
-                title={title}
-                deleteAction={() => handleVideoDelete(_id)}
-                onClick={() => handleVideoClick(title, storage_url, content_type)}
+                title={fileName}
+                onClick={() => handleVideoClick(fileName, location, mimetype)}
               />
             )
           )

@@ -19,9 +19,7 @@ export const SignupLogin = () => {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    setTimeout(() => {
       setIsLoading(false)
-    }, 1500)
   }, [])
   return (
     <>

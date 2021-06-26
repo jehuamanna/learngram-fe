@@ -7,9 +7,12 @@ export const Signup = async (body) => {
       method: "POST",
       url: "/api/v1/user/signup",
       data: body,
-    });
+    })
+    console.log('----',JSON.stringify(res.message))
     if(res && res.status === 200) {
       return { success: true, data: res.data };
+    } else if(res.message === "User already exists. Please login.") {
+        return { success: true, responseType: "user-exists", message: res.message}
     } else {
       return { success: false };
     }
@@ -44,7 +47,6 @@ export const Login = async (body) => {
       data: body,
     });
     if(res && res.status === 200) {
-      console.log(res)
       localStorage.setItem(LEARNGRAM_ACCESS_KEY, res.data.jwt);
       return { success: true, data: res.data };
     } else {

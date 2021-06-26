@@ -25,8 +25,9 @@ API.interceptors.response.use((response) => response, (error) => {
     alert("Seems session was offline for long. Please login again")
     Logout();
   }
+  return {statusCode, message}
 
-  alert(message);
+  // alert(message);
 });
 
 export default API;

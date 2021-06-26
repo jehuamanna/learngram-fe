@@ -16,7 +16,6 @@ export const VideoThumbnail = ({ title, deleteAction, onClick }) => {
         <img src={Play} width={30} alt="play" />
       </Thumb>
       <Tray>
-        <a href="#" onClick={deleteAction}>Delete</a>
       </Tray>
     </Container>
   );

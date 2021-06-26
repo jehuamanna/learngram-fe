@@ -4,10 +4,10 @@ export const createVideo = async (body) => {
   try {
     const { status, data } = await API.request({
       method: "POST",
-      url: "/video",
+      url: "/api/v1/video/upload",
       data: body
     });
-    if(status === 201){
+    if(status === 200){
       return { success: true, data };
     } else {
       return { success: false };
@@ -21,7 +21,7 @@ export const listVideos = async () => {
   try {
     const { status, data } = await API.request({
       method: "GET",
-      url: "/video",
+      url: "/api/v1/video/videos",
     });
     if(status === 200){
       return { success: true, data };
@@ -30,21 +30,5 @@ export const listVideos = async () => {
     }
   } catch (e) {
     console.error('Error listing videos...', e);
-  }
-}
-
-export const deleteVideo = async (id) => {
-  try {
-    const { status, data } = await API.request({
-      method: "DELETE",
-      url: `/video/${id}`,
-    });
-    if(status === 200){
-      return { success: true, data };
-    } else {
-      return { success: false };
-    }
-  } catch (e) {
-    console.error('Error uploading video...', e);
   }
 }

@@ -19,7 +19,7 @@ import { AuthContext } from "../../common/contexts/auth-context";
 export const LoginForm = () => {
 
   const inputEl = useRef(null);
-  const { authenticated } = useContext(AuthContext);
+  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isEmailErrorMsg, setIsEmailErrorMsg] = useState(false);
@@ -33,10 +33,10 @@ export const LoginForm = () => {
   },[])
   
   useEffect(() => {
-    if(authenticated){
+    if(isLoggedIn){
       setRedirectToHome(true)
     }    
-  },[authenticated])
+  },[isLoggedIn])
 
   const handleLogin = async () => {
     if(!email){
@@ -55,8 +55,8 @@ export const LoginForm = () => {
       return
     }
     const { success } = await Login({ email, password });
-    console.log(success)
     if(success) {
+      setIsLoggedIn(true)
       setRedirectToHome(true)
     }
   }
@@ -92,7 +92,6 @@ export const LoginForm = () => {
             if(e.target.value){
               setIsEmailErrorMsg(false)
               const isValidEmail = emailValidatorRE.test(String(e.target.value).toLowerCase())
-              console.log(e.target.value)
               if(isValidEmail){
                 setIsValidEmailErrorMsg(false)
                 setEmailErrorMsg("")

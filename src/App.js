@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 import { PrivateRoute } from './common/components/private-route';
@@ -11,17 +11,17 @@ import { LandingPage } from './pages/landing-page';
 function App() {
 
   const { authenticated } = useContext(AuthContext);
+  const [isLoggedIn, setIsLoggedIn] = useState(authenticated)
 
   return (
-    // <AuthContext.Provider value={{ authenticated }}>
+    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn}}>
       <BrowserRouter>
         <Switch>
           <PrivateRoute path="/" exact component={LandingPage} />
-          {/* <Route path="/" exact component={LandingPage} /> */}
           <Route path="/login" exact component={SignupLogin} />
         </Switch>
       </BrowserRouter>
-    // </AuthContext.Provider>
+    </AuthContext.Provider>
   );
 }
 

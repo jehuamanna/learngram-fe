@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect} from "react";
+import React, { useRef, useState, useEffect, useContext} from "react";
 import {Redirect} from 'react-router-dom';
 import { Button } from "../../common/components/buttons/button";
 import { passwordValidator } from "../../common/utils/validations";
@@ -12,17 +12,20 @@ import {
   SuccessIcon,
   ButtonContainer,
   ErrorMessage,
-  ErrorDiv
+  ErrorDiv,
+  Message,
 
 } from './styled-components'
 
 import Tick from "../../common/assets/icons/tick.svg";
 import Close from "../../common/assets/icons/close.svg";
+import { AuthContext } from "../../common/contexts/auth-context";
 
 import { emailValidatorRE } from '../../common/utils/validations'
 export const SignupForm = () => {
 
   const inputEl = useRef(null)
+  const { setIsLoggedIn } = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -32,6 +35,8 @@ export const SignupForm = () => {
   const [emailErrorMsg, setEmailErrorMsg] = useState('')
   const [secondaryField, setSecondaryField] = useState('Password')
   const [redirectToHome, setRedirectToHome] = useState(false)
+  const [message, setMessage] = useState("")
+
 
   useEffect(() => {
     inputEl && inputEl.current.focus()
@@ -48,22 +53,38 @@ export const SignupForm = () => {
 
   const handleSignUp = async () => {
     if(secondaryField === "Password") {
-      const { success } = await Signup({ email, password });
+      const { success,responseType, message } = await Signup({ email, password });
       if (success) {
-        setPassword('');
-        setSecondaryField('OTP')
+        if(responseType){
+          if(responseType === "user-exists") {
+            setMessage(message)
+          }
+        }else {  
+          setPassword('');
+          setSecondaryField('OTP')
+        }
       }
     } else {
       const { success } = await VerifyOTP({ email, otp:password });
       if (success) {
         setEmail('');
         setPassword('');
+        setIsLoggedIn(true)
         setRedirectToHome(true)
       }
       
     }
     setLoading(false);
   }
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleSignUp()
+      return
+    }
+  }
+
+
   if(redirectToHome){
     return <Redirect to="/" />
   }
@@ -107,8 +128,9 @@ export const SignupForm = () => {
           type="password"
           value={password}
           onChange={handlePasswordChange}
+          onKeyDown={handleKeyDown}
         />
-        <ErrorMessage></ErrorMessage>
+        <Message>{message}</Message>
         {errors.filter(error => !error.valid).length > 0
           ? (
             <ErrorContainer>
