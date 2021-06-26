@@ -22,10 +22,12 @@ export const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
   box-shadow: 5px 5px 10px #656882;
+  transition: opacity 0.5s;
+  opacity: 1;
 `;
 
 export const Container = styled.div`
-  width: 30%;
+  width: 550px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -116,4 +118,13 @@ export const ErrorDiv = styled.div`
   color: white;
   padding: 5px 20px;
   background-color: ${theme.background};
+`;
+
+export const Spinner = styled.div`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
 `;

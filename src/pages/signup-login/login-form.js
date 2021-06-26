@@ -1,7 +1,7 @@
-import React, { useState, useRef, useEffect} from "react";
-import { useHistory } from 'react-router'
+import React, { useState, useRef, useEffect, useContext} from "react";
 import { Button } from "../../common/components/buttons/button";
 import { Login } from "../../common/actions/auth";
+import {Redirect} from 'react-router-dom';
 import {
   LoginContainer,
   InputTitle,
@@ -14,17 +14,29 @@ import {
 
 import {emailValidatorRE} from '../../common/utils/validations'
 import Close from "../../common/assets/icons/close.svg";
+import { AuthContext } from "../../common/contexts/auth-context";
 
 export const LoginForm = () => {
 
   const inputEl = useRef(null);
-  const history = useHistory()
+  const { authenticated } = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isEmailErrorMsg, setIsEmailErrorMsg] = useState(false);
   const [isPasswordErrorMsg, setIsPasswordErrorMsg] = useState(false)
   const [isValidEmailErrorMsg, setIsValidEmailErrorMsg] = useState(false)
   const [emailErrorMsg, setEmailErrorMsg] = useState('')
+  const [redirectToHome, setRedirectToHome] = useState(false)
+
+  useEffect(() => {
+    inputEl && inputEl.current.focus()
+  },[])
+  
+  useEffect(() => {
+    if(authenticated){
+      setRedirectToHome(true)
+    }    
+  },[authenticated])
 
   const handleLogin = async () => {
     if(!email){
@@ -43,14 +55,31 @@ export const LoginForm = () => {
       return
     }
     const { success } = await Login({ email, password });
+    console.log(success)
     if(success) {
-      history.go(0)
+      setRedirectToHome(true)
     }
   }
 
-  useEffect(() => {
-    inputEl && inputEl.current.focus()
-  },[])
+  const handlePassword = (e) => {
+    if(e.target.value){
+      setIsPasswordErrorMsg(false)
+    } else {
+      setIsPasswordErrorMsg(true)
+    }
+    setPassword(e.target.value)
+  }
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleLogin()
+      return
+    }
+  }
+
+  if(redirectToHome){
+    return <Redirect to="/" />
+  }
 
   return (
     <LoginContainer>
@@ -91,14 +120,8 @@ export const LoginForm = () => {
         <Input
           type="password"
           value={password}
-          onChange={e => {
-            if(e.target.value){
-              setIsPasswordErrorMsg(false)
-            }else{
-              setIsPasswordErrorMsg(true)
-            }
-            setPassword(e.target.value)}
-          }
+          onChange={handlePassword}
+          onKeyDown={handleKeyDown}
         />
           <ErrorMessage>
         {isPasswordErrorMsg ? 

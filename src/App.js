@@ -16,8 +16,8 @@ function App() {
     // <AuthContext.Provider value={{ authenticated }}>
       <BrowserRouter>
         <Switch>
-          {/* <PrivateRoute path="/" exact component={LandingPage} /> */}
-          <Route path="/" exact component={LandingPage} />
+          <PrivateRoute path="/" exact component={LandingPage} />
+          {/* <Route path="/" exact component={LandingPage} /> */}
           <Route path="/login" exact component={SignupLogin} />
         </Switch>
       </BrowserRouter>

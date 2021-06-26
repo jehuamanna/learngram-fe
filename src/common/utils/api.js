@@ -1,17 +1,19 @@
 import axios from 'axios';
 import { stringify } from 'qs';
+import {LEARNGRAM_ACCESS_KEY} from '../constants/constants'
 
 import { Logout } from '../actions/auth';
 
-const token = localStorage.getItem("learngram-jwt-access-key");
+const token = localStorage.getItem(LEARNGRAM_ACCESS_KEY);
 
 export const API = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: "http://frontend-assignment.learngram.ai",
   headers: { 
     "access-control-allow-origin": "*",
+    // "Content-Type": "application/x-www-form-urlencoded",
     Authorization: `Bearer ${token}` 
   },
-  paramsSerializer: params => stringify(params, { arrayFormat: 'brackets' })
+  // paramsSerializer: params => stringify(params, { arrayFormat: 'brackets' })
 });
 
 API.interceptors.response.use((response) => response, (error) => {

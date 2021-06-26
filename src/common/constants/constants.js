@@ -1,0 +1,1 @@
+export const LEARNGRAM_ACCESS_KEY = "learngram-jwt-access-key"

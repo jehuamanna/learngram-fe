@@ -1,8 +1,8 @@
-import React, { useRef, useState, useEffect } from "react";
-
+import React, { useRef, useState, useEffect} from "react";
+import {Redirect} from 'react-router-dom';
 import { Button } from "../../common/components/buttons/button";
 import { passwordValidator } from "../../common/utils/validations";
-import { Signup } from "../../common/actions/auth";
+import { Signup, VerifyOTP } from "../../common/actions/auth";
 
 import {
   SignupContainer,
@@ -30,32 +30,43 @@ export const SignupForm = () => {
   const [isEmailErrorMsg, setIsEmailErrorMsg] = useState(false);
   const [isValidEmailErrorMsg, setIsValidEmailErrorMsg] = useState(false)
   const [emailErrorMsg, setEmailErrorMsg] = useState('')
+  const [secondaryField, setSecondaryField] = useState('Password')
+  const [redirectToHome, setRedirectToHome] = useState(false)
 
   useEffect(() => {
     inputEl && inputEl.current.focus()
   }, [])
   const handlePasswordChange = e => {
     const value = e.target.value;
-    const errs = passwordValidator(value);
-    setErrors(errs);
     setPassword(value);
+    if(secondaryField === "Password"){
+      const errs = passwordValidator(value);
+      setErrors(errs);
+      setPassword(value);
+    }
   };
 
   const handleSignUp = async () => {
-    const errs = passwordValidator(password);
-    setErrors(errs);
-    setLoading(true);
-    if (errs.length) {
-      return
-    }
-    const { success } = await Signup({ email, password });
-    if (success) {
-      setEmail('');
-      setPassword('');
+    if(secondaryField === "Password") {
+      const { success } = await Signup({ email, password });
+      if (success) {
+        setPassword('');
+        setSecondaryField('OTP')
+      }
+    } else {
+      const { success } = await VerifyOTP({ email, otp:password });
+      if (success) {
+        setEmail('');
+        setPassword('');
+        setRedirectToHome(true)
+      }
+      
     }
     setLoading(false);
   }
-
+  if(redirectToHome){
+    return <Redirect to="/" />
+  }
   return (
     <SignupContainer>
       <>
@@ -91,7 +102,7 @@ export const SignupForm = () => {
         </ErrorMessage>
       </>
       <>
-        <InputTitle>Password</InputTitle>
+        <InputTitle>{secondaryField}</InputTitle>
         <Input
           type="password"
           value={password}

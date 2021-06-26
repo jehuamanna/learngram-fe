@@ -10,7 +10,7 @@ export const Navbar = () => {
   return (
     <Container>
       <StyledLink href="/">Economics 101</StyledLink>
-      {/* <StyledLink onClick={() => Logout()}>Logout</StyledLink> */}
+      <StyledLink onClick={() => Logout()}>Logout</StyledLink>
     </Container>
   );
 }
