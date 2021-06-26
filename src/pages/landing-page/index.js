@@ -131,7 +131,7 @@ export const LandingPage = () => {
             </VideoArea>
           )}
           <VideoListArea>
-              {videos.length > 0 && false 
+              {videos.length > 0
                 ? videos.map(({ _id, fileName, location, mimetype}) => (
                     <VideoThumbnail
                       key={_id}
