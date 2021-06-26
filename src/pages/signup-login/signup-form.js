@@ -53,7 +53,8 @@ export const SignupForm = () => {
 
   const handleSignUp = async () => {
     if(secondaryField === "Password") {
-      const { success,responseType, message } = await Signup({ email, password });
+      const result = await Signup({ email, password });
+      const { success,responseType, message } = result || {}
       if (success) {
         if(responseType){
           if(responseType === "user-exists") {

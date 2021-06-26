@@ -54,7 +54,8 @@ export const LoginForm = () => {
     if(!email || !password || !isValidEmail){
       return
     }
-    const { success, responseType, message } = await Login({ email, password });
+    const result =  await Login({ email, password });
+    const { success, responseType, message } = result || {}
     if(success) {
       if(responseType === 'invalid-user'){
         setIsPasswordErrorMsg(true)
