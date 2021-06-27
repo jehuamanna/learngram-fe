@@ -12,6 +12,8 @@ import {
   Spinner
 } from './styled-components'
 import Loader from "react-loader-spinner";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const SignupLogin = () => {
 
@@ -33,6 +35,7 @@ export const SignupLogin = () => {
         />
       </Spinner> :  
       <OutsideContainer>
+      <ToastContainer />
         <InsideContainer>
           <Container>
             <CompanyName>LearnGram</CompanyName>
@@ -46,8 +49,8 @@ export const SignupLogin = () => {
                 </TabHeader>
               </TabContainer>
               {tab === 0
-                ? <LoginForm />
-                : <SignupForm />
+                ? <LoginForm toast={(f) => f && f()} />
+                : <SignupForm toast={(f) => f && f()}/>
               }
             </FormContainer>
           </Container>

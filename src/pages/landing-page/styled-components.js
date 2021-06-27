@@ -50,17 +50,16 @@ export const VideoListArea = styled.div`
 `;
 
 export const UploadButton = styled.a`
-  padding: 14px 30px;
-  width: 200px;
-  margin-left: 15px;
-  border-radius: 5px;
-  font-size: 30px;
   background-color: ${theme.background};
   color: white;
+  padding: 22px 0px;
+  font-size: 20px;
+  border-radius: 5px;
   cursor: pointer;
   text-align: center;
-  height: 70px;
   box-sizing: border-box;
+  height: 70px;
+  width: 200px;
 `;
 
 export const ClearButton = styled.div`

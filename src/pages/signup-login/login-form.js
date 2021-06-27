@@ -15,12 +15,12 @@ import {
 import {emailValidatorRE} from '../../common/utils/validations'
 import Close from "../../common/assets/icons/close.svg";
 import { AuthContext } from "../../common/contexts/auth-context";
-import { LEARNGRAM_ACCESS_KEY } from "../../common/constants/constants";
+import { toast } from 'react-toastify';
 
-export const LoginForm = () => {
+export const LoginForm = (props) => {
 
   const inputEl = useRef(null);
-  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn, setIsLoggedIn, setIsFromLoginPage } = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isEmailErrorMsg, setIsEmailErrorMsg] = useState(false);
@@ -29,6 +29,7 @@ export const LoginForm = () => {
   const [emailErrorMsg, setEmailErrorMsg] = useState('')
   const [redirectToHome, setRedirectToHome] = useState(false)
   const [passwordErrorMessage, setPasswordErrorMessage] = useState("Please Enter Password")
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     inputEl && inputEl.current.focus()
@@ -54,19 +55,20 @@ export const LoginForm = () => {
     if(!email || !password || !isValidEmail){
       return
     }
+    setIsLoading(true)
     const result =  await Login({ email, password });
+    setIsLoading(false)
     const { success, responseType, message } = result || {}
     if(success) {
       if(responseType === 'invalid-user'){
-        setIsPasswordErrorMsg(true)
-        setPasswordErrorMessage('Invalid Username/Password')
+        props.toast(() => toast.error('Invalid Username/Password'))
         setPassword("")
       } else if(responseType === 'nonexistent-user'){
-        setIsPasswordErrorMsg(true)
-        setPasswordErrorMessage('User does not exist. Please signup')
+        props.toast(() => toast.error('User does not exist. Please signup'))
         setPassword("")
       } else {
         setIsLoggedIn(true)
+        setIsFromLoginPage(true)
       }
     }
     
@@ -142,7 +144,7 @@ export const LoginForm = () => {
               </ErrorDiv>: null}
           </ErrorMessage>     
         </>
-      <ButtonContainer><Button text="Login" action={handleLogin} /></ButtonContainer>
+      <ButtonContainer><Button text="Login" isLoading={isLoading} action={handleLogin} /></ButtonContainer>
     </LoginContainer>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import { Navbar } from "../../common/components/navbar/navbar";
 import { VideoThumbnail } from "./video-thumbnail";
 import { createVideo, listVideos } from "../../common/actions/video";
@@ -19,11 +19,15 @@ import { LEARNGRAM_ACCESS_KEY } from "../../common/constants/constants";
 import SearchIcon from '../../common/assets/icons/search.svg'
 import SimpleBar from 'simplebar-react';
 import 'simplebar/dist/simplebar.min.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { AuthContext } from "../../common/contexts/auth-context";
 
 
 export const LandingPage = () => {
 
   const FILE_SIZE_LIMIT = 1024*1024;
+  const { isFromLoginPage, setIsFromLoginPage } = useContext(AuthContext);
 
   const videoRef = useRef(null)
   const [file, setFile] = useState(null);
@@ -47,6 +51,13 @@ export const LandingPage = () => {
     }
 
     fetchData()
+  }, [])
+  
+  useEffect(() => {
+    if(isFromLoginPage){
+      toast.success("Logged In Successfully")
+      setIsFromLoginPage(false)
+    }
   }, [])
   
   
@@ -92,60 +103,67 @@ export const LandingPage = () => {
     const {success, data} = await createVideo(formData)
     if(success) {
       console.log(data)
+      toast.success("Video Added Successfully")
       setLoading(false)
       setIsUploading(false)
+      setVideos(data.videos)
+      setOriginalVideos(data.videos)
+      setFileName('');
+      setFileSource(null);
+      setFileType(null);
     }
   }
 
   return (
     <div>
+      <ToastContainer />
       <Navbar />
-    <Container>
-      <InputArea>
-        <Input>
-          <ClearButton onClick={handleClear}>{fileName ? "X": <img src={SearchIcon} alt="search"/>} </ClearButton>
-          <StyledInput value={fileName} onChange={handleSearch} />
-        </Input>
-        <>
-          <input type="file" id="actual-btn" accept="video/*" onChange={handleFileUpload} hidden/>
-          {!isUploading
-            ? <StyledLabel for="actual-btn">Upload Lecture</StyledLabel>
-            : (
-              <>
-                <UploadButton onClick={uploadFile}  >
-                  {loading ? 'Uploading...' : 'Upload'}
-                </UploadButton>
-              </>
-            )
-          }
-        </>
-      </InputArea>
-      <VideoDisplayArea>
-        <SimpleBar style={{ maxHeight: 650 }}>
-          {fileSource
-          && (
-            <VideoArea>
-              <video ref={videoRef} width={800} height={500} controls>
-                <source src={fileSource} type={fileType} />
-              </video>
-            </VideoArea>
-          )}
-          <VideoListArea>
-              {videos.length > 0
-                ? videos.map(({ _id, fileName, location, mimetype}) => (
-                    <VideoThumbnail
-                      key={_id}
-                      title={fileName}
-                      onClick={() => handleVideoClick(fileName, location, mimetype)}
-                    />
+      <Container>
+        <InputArea>
+          <Input>
+            <ClearButton onClick={handleClear}>{fileName ? "X": <img src={SearchIcon} alt="search"/>} </ClearButton>
+            <StyledInput value={fileName} onChange={handleSearch} />
+          </Input>
+          <>
+            <input type="file" id="actual-btn" accept="video/*" onChange={handleFileUpload} hidden/>
+            {!isUploading
+              ? <StyledLabel for="actual-btn">Upload Lecture</StyledLabel>
+              : (
+                <>
+                  <UploadButton onClick={uploadFile}  >
+                    {loading ? 'Uploading...' : 'Upload'}
+                  </UploadButton>
+                </>
+              )
+            }
+          </>
+        </InputArea>
+        <VideoDisplayArea>
+          <SimpleBar style={{ maxHeight: 650 }}>
+            {fileSource
+            && (
+              <VideoArea>
+                <video ref={videoRef} width={800} height={500} controls>
+                  <source src={fileSource} type={fileType} />
+                </video>
+              </VideoArea>
+            )}
+            <VideoListArea>
+                {videos.length > 0
+                  ? videos.map(({ _id, fileName, location, mimetype}) => (
+                      <VideoThumbnail
+                        key={_id}
+                        title={fileName}
+                        onClick={() => handleVideoClick(fileName, location, mimetype)}
+                      />
+                    )
                   )
-                )
-                : <Empty>No videos to display</Empty>
-              }
-          </VideoListArea>
-        </SimpleBar>
-      </VideoDisplayArea>
-        </Container>
+                  : <Empty>No videos to display</Empty>
+                }
+            </VideoListArea>
+          </SimpleBar>
+        </VideoDisplayArea>
+      </Container>
     </div>
   );
 }

@@ -12,9 +12,10 @@ function App() {
 
   const { authenticated } = useContext(AuthContext);
   const [isLoggedIn, setIsLoggedIn] = useState(authenticated)
+  const [isFromLoginPage, setIsFromLoginPage] = useState(false)
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn}}>
+    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, isFromLoginPage, setIsFromLoginPage}}>
       <BrowserRouter>
         <Switch>
           <PrivateRoute path="/" exact component={LandingPage} />

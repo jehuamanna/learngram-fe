@@ -20,22 +20,25 @@ import {
 import Tick from "../../common/assets/icons/tick.svg";
 import Close from "../../common/assets/icons/close.svg";
 import { AuthContext } from "../../common/contexts/auth-context";
-
+import { toast } from 'react-toastify';
 import { emailValidatorRE } from '../../common/utils/validations'
-export const SignupForm = () => {
+
+
+
+export const SignupForm = (props) => {
 
   const inputEl = useRef(null)
-  const { setIsLoggedIn } = useContext(AuthContext);
+  const { setIsLoggedIn, setIsFromLoginPage } = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState([]);
   const [isEmailErrorMsg, setIsEmailErrorMsg] = useState(false);
   const [isValidEmailErrorMsg, setIsValidEmailErrorMsg] = useState(false)
   const [emailErrorMsg, setEmailErrorMsg] = useState('')
   const [secondaryField, setSecondaryField] = useState('Password')
   const [redirectToHome, setRedirectToHome] = useState(false)
-  const [message, setMessage] = useState("")
+  const [otpErrorMessage, setOTPErrorMessage] = useState("")
 
 
   useEffect(() => {
@@ -52,30 +55,39 @@ export const SignupForm = () => {
   };
 
   const handleSignUp = async () => {
+    if(password === ""){
+      setOTPErrorMessage("Please Enter OTP")
+      return
+    }
     if(secondaryField === "Password") {
+      setIsLoading(true)
       const result = await Signup({ email, password });
+      setIsLoading(false)
       const { success,responseType, message } = result || {}
       if (success) {
         if(responseType){
           if(responseType === "user-exists") {
-            setMessage(message)
+            props.toast(() => toast.error(message))
           }
         }else {  
           setPassword('');
+          props.toast(() => toast.info("OTP Sent To Registered Email. Please Enter OTP"))
           setSecondaryField('OTP')
         }
       }
     } else {
+      setIsLoading(true)
       const { success } = await VerifyOTP({ email, otp:password });
+      setIsLoading(false)
       if (success) {
         setEmail('');
         setPassword('');
         setIsLoggedIn(true)
+        setIsFromLoginPage(true)
         setRedirectToHome(true)
       }
       
     }
-    setLoading(false);
   }
 
   const handleKeyDown = (e) => {
@@ -131,7 +143,7 @@ export const SignupForm = () => {
           onChange={handlePasswordChange}
           onKeyDown={handleKeyDown}
         />
-        <Message>{message}</Message>
+        <Message>{otpErrorMessage}</Message>
         {errors.filter(error => !error.valid).length > 0
           ? (
             <ErrorContainer>
@@ -146,6 +158,7 @@ export const SignupForm = () => {
 
           <ButtonContainer>
             <Button
+              isLoading={isLoading}
               text="Signup"
               action={handleSignUp}
             />

@@ -1,17 +1,25 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { theme } from "../../constants/theme";
-
 import { Logout } from "../../actions/auth";
 
 export const Navbar = () => {
   return (
-    <Container>
-      <StyledLink href="/">Economics 101</StyledLink>
-      <StyledLink onClick={() => Logout()}>Logout</StyledLink>
-    </Container>
+    <>
+      <ToastContainer />
+      <Container>
+        <StyledLink href="/">Economics 101</StyledLink>
+        <StyledLink onClick={() => {
+          toast.success("Logging Out")
+          setTimeout(() => {
+            Logout()
+          }, 1500) 
+          }}>Logout</StyledLink>
+      </Container>
+    </>
   );
 }
 
