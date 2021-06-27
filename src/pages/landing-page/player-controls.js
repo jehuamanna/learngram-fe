@@ -1,4 +1,4 @@
-import React,{ useEffect, useState} from 'react';
+import React,{ forwardRef, useEffect, useState} from 'react';
 import {
     ControlsWrapper, 
     TopControls, 
@@ -28,7 +28,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { CustomPrettoSlider, VolumeSlider, CustomPopOver } from './pretto-slider';
 
-export const PlayerControls = (props) => {
+export const PlayerControls = forwardRef((props, ref) => {
     const {
         onPlayPause,
         isPlaying,
@@ -48,6 +48,7 @@ export const PlayerControls = (props) => {
         onSeekMouseDown,
         elapsedTime,
         totalDuration,
+        fileName,
     } = props
     const [handlePopOverFn, setHandlePopOverFn] = useState(null)
     const handleClick = (e) => {
@@ -56,10 +57,10 @@ export const PlayerControls = (props) => {
     }
         
     return (
-        <ControlsWrapper>
+        <ControlsWrapper ref={ref}>
             <TopControls>
                 <VideoTitle>
-                    ColdPlay
+                    {fileName}
                 </VideoTitle>
                 <BookmarkButton>
                     <FontAwesomeIcon icon={faBookmark}/>
@@ -138,4 +139,4 @@ export const PlayerControls = (props) => {
             </BottomControls>
         </ControlsWrapper>
     )
-}
+})

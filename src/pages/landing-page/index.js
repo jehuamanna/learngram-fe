@@ -156,7 +156,7 @@ export const LandingPage = () => {
           <SimpleBar style={{ maxHeight: 650 }}>
             {(fileSource) 
             && (
-              <VideoPlayer fileSource={fileSource} />
+              <VideoPlayer fileName={fileName} fileSource={fileSource} />
             )}
             <VideoListArea>
                 {videos.length > 0

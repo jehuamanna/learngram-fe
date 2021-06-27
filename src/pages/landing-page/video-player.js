@@ -7,6 +7,7 @@ import {
 import {PlayerControls} from './player-controls'
 import screenfull from 'screenfull';
 
+let count = 0;
 
 const format = (miliSeconds) => {
     if(isNaN(miliSeconds)){
@@ -25,12 +26,18 @@ const format = (miliSeconds) => {
 }
 
 export const VideoPlayer = (props) => {
-    
+    const {
+        fileSource,
+        fileName
+    } = props
+
     const videoPlayerRef = useRef(null)
     const videoContainerRef = useRef(null)
+    const controlsRef = useRef(null)
+
     const [state, setState] = useState({
-        isPlaying: true,
-        isMute: true,
+        isPlaying: false,
+        isMute: false,
         volume: 0.5,
         playbackRate: 1.0,
         played: 0,
@@ -99,6 +106,14 @@ export const VideoPlayer = (props) => {
     }
     
     const handleProgress = (changeState) => {
+        if(count > 3) {
+            controlsRef.current.style.visibility = "hidden"
+            count = 0;
+        }
+        if(controlsRef.current.style.visibility === "visible"){
+            count++;
+        }
+
         if(!seeking){
             setState({
                 ...state,
@@ -129,6 +144,11 @@ export const VideoPlayer = (props) => {
         })
 
     }
+    
+    const handleMouseMove = () => {
+        controlsRef.current.style.visibility = "visible"
+        count = 0
+    }
 
     const currentTime = videoPlayerRef.current ? videoPlayerRef.current.getCurrentTime() : "00:00"
     const duration = videoPlayerRef.current ? videoPlayerRef.current.getDuration() : "00:00"
@@ -137,9 +157,11 @@ export const VideoPlayer = (props) => {
     const totalDuration = format(duration)
 
     return (        
-    <VideoArea ref={videoContainerRef}>
+    <VideoArea 
+        onMouseMove={handleMouseMove}
+        ref={videoContainerRef}>
         <PlayerWrapper>
-            <ReactPlayer url={props.fileSource}
+            <ReactPlayer url={fileSource}
             ref={videoPlayerRef}
             width="100%"
             height="100%"
@@ -150,6 +172,8 @@ export const VideoPlayer = (props) => {
             onProgress={handleProgress}
             />
         <PlayerControls
+            ref={controlsRef}
+            fileName={fileName}
             isPlaying={isPlaying}
             onPlayPause={handlePlayPause}
             onRewind={handleRewind}
