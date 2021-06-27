@@ -49,7 +49,7 @@ export const VideoListArea = styled.div`
   margin: 0 auto;
 `;
 
-export const UploadButton = styled.a`
+export const UploadButton = styled.div`
   background-color: ${theme.background};
   color: white;
   padding: 22px 0px;
@@ -60,6 +60,9 @@ export const UploadButton = styled.a`
   box-sizing: border-box;
   height: 70px;
   width: 200px;
+  display: flex;
+  justify-content: space-evenly;
+  
 `;
 
 export const ClearButton = styled.div`
@@ -126,4 +129,9 @@ export const ThumbnailContainer = styled.div`
 export const VideoDisplayArea = styled.div`
   height: 650px;
   width: 100%;
+`;
+
+
+export const UploadingLoader = styled.div`
+  display: flex;
 `;

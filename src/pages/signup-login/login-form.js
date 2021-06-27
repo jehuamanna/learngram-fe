@@ -40,6 +40,9 @@ export const LoginForm = (props) => {
   },[isLoggedIn])
 
   const handleLogin = async () => {
+    if(isLoading){
+      return
+    }
     if(!email){
       setIsEmailErrorMsg(true)
       setEmailErrorMsg('Please Enter Email')

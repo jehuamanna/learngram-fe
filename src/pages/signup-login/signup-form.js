@@ -61,6 +61,9 @@ export const SignupForm = (props) => {
   };
 
   const handleSignUp = async () => {
+    if(isLoading){
+      return
+    }
     if(password === ""){
       setOTPErrorMessage("Please Enter OTP")
       return
@@ -100,6 +103,7 @@ export const SignupForm = (props) => {
           else if(responseType === "otp-six-digits") {
             props.toast(() => toast.error(message))
           }
+          setPassword('')
         }else {  
           setEmail('');
           setPassword('');

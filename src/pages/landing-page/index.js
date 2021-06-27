@@ -14,6 +14,7 @@ import {
   Input,
   Container,
   VideoDisplayArea,
+  UploadingLoader,
 } from './styled-components'
 import { LEARNGRAM_ACCESS_KEY } from "../../common/constants/constants";
 import SearchIcon from '../../common/assets/icons/search.svg'
@@ -22,6 +23,7 @@ import 'simplebar/dist/simplebar.min.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AuthContext } from "../../common/contexts/auth-context";
+import Loader from "react-loader-spinner";
 
 
 export const LandingPage = () => {
@@ -40,7 +42,6 @@ export const LandingPage = () => {
   const [isUploading, setIsUploading] = useState(false)
 
   useEffect(() => {
-    console.log(localStorage.getItem(LEARNGRAM_ACCESS_KEY))
     async function fetchData() {
       const { success, data}  = await listVideos()
       if(success){
@@ -131,7 +132,17 @@ export const LandingPage = () => {
               : (
                 <>
                   <UploadButton onClick={uploadFile}  >
-                    {loading ? 'Uploading...' : 'Upload'}
+                    {loading ? 
+                    <>
+                      <div>Uploading</div>
+                      <Loader
+                        type="Puff"
+                        color="#00BFFF"
+                        height={30}
+                        width={30}
+                      />  
+                      </> :
+                    'Upload'}
                   </UploadButton>
                 </>
               )

@@ -30,8 +30,6 @@ API.interceptors.response.use((response) => response, (error) => {
     Logout();
   }
   return {statusCode, message}
-
-  // alert(message);
 });
 
 export default API;
