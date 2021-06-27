@@ -27,7 +27,7 @@ API.interceptors.response.use((response) => response, (error) => {
   const message = error.response.data.message;
 
   if (statusCode === 401) {
-    // Logout();
+    Logout();
   }
   return {statusCode, message}
 

@@ -51,6 +51,12 @@ export const SignupForm = (props) => {
       const errs = passwordValidator(value);
       setErrors(errs);
       setPassword(value);
+    }else {
+      if(value === ""){
+        setOTPErrorMessage("Please Enter OTP")
+      } else {
+        setOTPErrorMessage("")
+      }
     }
   };
 
@@ -63,7 +69,7 @@ export const SignupForm = (props) => {
       setIsLoading(true)
       const result = await Signup({ email, password });
       setIsLoading(false)
-      const { success,responseType, message } = result || {}
+      const { success, responseType, message } = result || {}
       if (success) {
         if(responseType){
           if(responseType === "user-exists") {
@@ -77,14 +83,30 @@ export const SignupForm = (props) => {
       }
     } else {
       setIsLoading(true)
-      const { success } = await VerifyOTP({ email, otp:password });
+      const result =  await VerifyOTP({ email, otp:password });
       setIsLoading(false)
+      const { success, responseType, message } = result || {}
       if (success) {
-        setEmail('');
-        setPassword('');
-        setIsLoggedIn(true)
-        setIsFromLoginPage(true)
-        setRedirectToHome(true)
+        if(responseType){
+          if(responseType === "user-exists") {
+            props.toast(() => toast.error(message))
+          }
+          else if(responseType === "user-doesnot-exists") {
+            props.toast(() => toast.error(message))
+          }
+          else if(responseType === "invalid-otp") {
+            props.toast(() => toast.error(message))
+          }
+          else if(responseType === "otp-six-digits") {
+            props.toast(() => toast.error(message))
+          }
+        }else {  
+          setEmail('');
+          setPassword('');
+          setIsLoggedIn(true)
+          setIsFromLoginPage(true)
+          setRedirectToHome(true)
+        }
       }
       
     }
@@ -143,7 +165,12 @@ export const SignupForm = (props) => {
           onChange={handlePasswordChange}
           onKeyDown={handleKeyDown}
         />
-        <Message>{otpErrorMessage}</Message>
+          <ErrorMessage>
+              {otpErrorMessage ?<ErrorDiv style={{ display: "flex" }} >
+                <SuccessIcon login={true} src={ Close} width={15} />
+               {otpErrorMessage}
+              </ErrorDiv> : null}
+          </ErrorMessage>     
         {errors.filter(error => !error.valid).length > 0
           ? (
             <ErrorContainer>

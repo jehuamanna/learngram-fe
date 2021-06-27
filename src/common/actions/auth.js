@@ -29,8 +29,14 @@ export const VerifyOTP = async (body) => {
       data: body,
     });
     if(res && res.status === 200) {
-      localStorage.setItem(LEARNGRAM_ACCESS_KEY, res.data.access_token);
+      localStorage.setItem(LEARNGRAM_ACCESS_KEY, res.data.jwt);
       return { success: true, data: res.data };
+    } else if(res.message === "User not found. Please signup.") {
+        return { success: true, responseType: "user-doesnot-exists", message: res.message}
+    } else if(res.message === "OTP must be 6 digits.") {
+        return { success: true, responseType: "otp-six-digits", message: res.message}
+    } else if(res.message === "Invalid OTP. Please check OTP and try again.") {
+        return { success: true, responseType: "invalid-otp", message: res.message}
     } else {
       return { success: false };
     }
