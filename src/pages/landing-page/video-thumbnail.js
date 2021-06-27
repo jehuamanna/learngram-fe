@@ -13,7 +13,7 @@ export const VideoThumbnail = ({ title, deleteAction, onClick }) => {
     <ThumbnailContainer>
       <Thumb onClick={onClick}>
         <p>{title}</p>
-        <img src={Play} width={30} alt="play" />
+        <img src={Play} width={30} style={{filter: "invert(38%) sepia(45%) saturate(6575%) hue-rotate(226deg) brightness(97%) contrast(98%)"}}alt="play" />
       </Thumb>
       <Tray>
       </Tray>

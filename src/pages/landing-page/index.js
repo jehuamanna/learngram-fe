@@ -24,6 +24,9 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AuthContext } from "../../common/contexts/auth-context";
 import Loader from "react-loader-spinner";
+import ReactPlayer from 'react-player/lazy'
+import { VideoPlayer } from "./video-player";
+
 
 
 export const LandingPage = () => {
@@ -151,13 +154,9 @@ export const LandingPage = () => {
         </InputArea>
         <VideoDisplayArea>
           <SimpleBar style={{ maxHeight: 650 }}>
-            {fileSource
+            {(fileSource) 
             && (
-              <VideoArea>
-                <video ref={videoRef} width={800} height={500} controls>
-                  <source src={fileSource} type={fileType} />
-                </video>
-              </VideoArea>
+              <VideoPlayer fileSource={fileSource} />
             )}
             <VideoListArea>
                 {videos.length > 0
