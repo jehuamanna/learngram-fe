@@ -71,21 +71,43 @@ const PrettoSlider = withStyles({
     },
   })(Slider);
 
-export  const CustomPrettoSlider = () => {
+export  const CustomPrettoSlider = ({played, onSeek, onSeekMouseDown, onSeekMouseUp, elapsedTime}) => {
     return (
-        <PrettoSlider valueLabelDisplay="auto" aria-label="pretto slider" min={0} max={100} defaultValue={20} ValueLabelComponent={ValueLabelComponent}/>
+        <PrettoSlider 
+            valueLabelDisplay="auto" 
+            aria-label="pretto slider" 
+            min={0} 
+            max={100} 
+            value={played* 100} 
+            onChange={onSeek}
+            onMouseDown={onSeekMouseDown}
+            onChangeCommitted={onSeekMouseUp}
+            ValueLabelComponent={(props) => <ValueLabelComponent {...props} value={elapsedTime} />}/>
+
     )
 }
 
 
-export const VolumeSlider = () => {
+export const VolumeSlider = ({onVolumechange, onVolumeSeekUp, volume}) => {
     const classes = useStyles();
     return (
-        <Slider min={0} max={100} defaultValue={75} className={classes.volumeSlider} />
+        <Slider 
+            min={0} 
+            max={100} 
+            onChange={onVolumechange}
+            onChangeCommitted={onVolumeSeekUp}
+            value={volume * 100} 
+            className={classes.volumeSlider} 
+        />
     )
 }
 
 export const CustomPopOver = (props) => {
+    const {
+        onPlaybackRateChange,
+        setHandlePopOverFn,
+        playbackRate,
+    } = props
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -97,8 +119,8 @@ export const CustomPopOver = (props) => {
     const id = open ? 'simple-popover' : undefined;
     
     useEffect(() => {
-        props.setHandlePopOverFn((target) => (target) => setAnchorEl(target))
-    }, [props.setHandlePopOverFn, setAnchorEl])
+        setHandlePopOverFn((target) => (target) => setAnchorEl(target))
+    }, [setHandlePopOverFn, setAnchorEl])
     
     return (
         <Popover
@@ -117,8 +139,11 @@ export const CustomPopOver = (props) => {
       >
         <Grid container direction="column-reverse">
             {[0.5, 1, 1.5, 2].map(rate => (
-            <Button variant="text" className={classes.playbackRateButton}>
-                <Typography color="secondary" className={classes.playbackRate}>{rate}</Typography>
+            <Button 
+                variant="text" 
+                onClick={() => onPlaybackRateChange(rate)}
+                className={classes.playbackRateButton}>
+                <Typography color={ rate === playbackRate ? "secondary" : "default"} className={classes.playbackRate}>{rate}</Typography>
             </Button>
             ))}
 

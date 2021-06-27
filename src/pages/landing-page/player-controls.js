@@ -22,13 +22,32 @@ import {
     faPlay,
     faPause,
     faVolumeUp,
+    faVolumeOff,
+    faVolumeMute,
     faExpand,
 } from '@fortawesome/free-solid-svg-icons'
 import { CustomPrettoSlider, VolumeSlider, CustomPopOver } from './pretto-slider';
 
 export const PlayerControls = (props) => {
     const {
-        onPlayPause
+        onPlayPause,
+        isPlaying,
+        onRewind,
+        onFastForward,
+        isMute,
+        onMute,
+        onVolumeSeekUp,
+        onVolumeChange,
+        volume,
+        playbackRate,
+        onPlaybackRateChange,
+        onToggleFullScreen,
+        played,
+        onSeek,
+        onSeekMouseUp,
+        onSeekMouseDown,
+        elapsedTime,
+        totalDuration,
     } = props
     const [handlePopOverFn, setHandlePopOverFn] = useState(null)
     const handleClick = (e) => {
@@ -48,26 +67,72 @@ export const PlayerControls = (props) => {
                 </BookmarkButton>
             </TopControls>
             <MidControls>
-                <FontAwesomeIconStyled icon={faFastBackward}/>
+                <FontAwesomeIconStyled 
+                    icon={faFastBackward}
+                    onClick={onRewind}
+                />
+                {isPlaying ? 
+                <FontAwesomeIconStyled 
+                    icon={faPause}
+                    onClick={onPlayPause}
+                />:
                 <FontAwesomeIconStyled 
                     icon={faPlay}
                     onClick={onPlayPause}
-                    />
-                <FontAwesomeIconStyled icon={faFastForward}/>
+                />}
+                <FontAwesomeIconStyled 
+                    icon={faFastForward}
+                    onClick={onFastForward}
+                />
             </MidControls>
             <BottomControls>
-                <CustomPrettoSlider />
+                <CustomPrettoSlider 
+                    played={played}
+                    onSeek={onSeek}
+                    onSeekMouseDown={onSeekMouseDown}
+                    onSeekMouseUp={onSeekMouseUp}
+                    elapsedTime={elapsedTime}
+                />
                 <ControlsBar>
                     <LeftBottomIcons>
-                        <BottomFontAwesomeStyledIcons icon={faPlay} />
-                        <BottomFontAwesomeStyledIcons icon={faVolumeUp} />
-                        <VolumeSlider />
-                        <TimeLapsed>05:07</TimeLapsed> 
+                        {isPlaying ? 
+                        <BottomFontAwesomeStyledIcons 
+                            icon={faPause} 
+                            onClick={onPlayPause}
+                        /> :
+                        <BottomFontAwesomeStyledIcons 
+                            icon={faPlay} 
+                            onClick={onPlayPause}
+                        />}
+                        {isMute ? 
+                        <BottomFontAwesomeStyledIcons 
+                            icon={faVolumeMute}
+                            onClick={onMute}
+                        />:
+                        <BottomFontAwesomeStyledIcons 
+                            icon={faVolumeUp}
+                            onClick={onMute}
+                        />}
+                        <VolumeSlider 
+                            onVolumeChange={onVolumeChange}
+                            onVolumeSeekUp={onVolumeSeekUp}
+                            volume={volume}
+                        />
+                        <TimeLapsed>{elapsedTime}/{totalDuration}</TimeLapsed> 
                     </LeftBottomIcons> 
                     <RightBottomIcons>
-                        <PlaybackSpeed onClick={handleClick}>1X</PlaybackSpeed>
-                        <CustomPopOver setHandlePopOverFn={setHandlePopOverFn} />
-                        <BottomFontAwesomeStyledIcons icon={faExpand} />
+                        <PlaybackSpeed 
+                            onClick={handleClick}
+                            >{playbackRate}X</PlaybackSpeed>
+                        <CustomPopOver 
+                            onPlaybackRateChange={onPlaybackRateChange}
+                            playbackRate={playbackRate}
+                            setHandlePopOverFn={setHandlePopOverFn} 
+                            />
+                        <BottomFontAwesomeStyledIcons 
+                            icon={faExpand}
+                            onClick={onToggleFullScreen}
+                            />
                     </RightBottomIcons>
                 </ControlsBar>
             </BottomControls>
