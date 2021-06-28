@@ -33,8 +33,12 @@ export const Container = styled.div`
   align-items: center;
   transform: translate(0px, 75px);
   width: 500px;
+  @media(max-width: 501px){
+    width: 100%;
+  }
   @media(min-width: 1025px){
     transform: translate(100px, 75px);
+    width: 500px;
   }
 `;
 
@@ -48,16 +52,20 @@ export const CompanyName= styled.p`
 
 export const TabContainer = styled.div`
   display: flex;
+  height: 75px;
+  font-size: 40px;
+  @media(max-width: 501px){
+    font-size: 24px;
+    height: 50px;
+  }
 `;
 
 export const TabHeader = styled.div`
   width: 50%;
-  height: 75px;
   background-color: ${({ active }) => active ? "white" : "#efefef9e"};
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 40px;
   color: ${({ active }) => active ? theme.background : "black"};
   font-weight: ${({ active }) => active ? "bold" : "normal"};
   cursor: pointer;
@@ -69,6 +77,9 @@ export const LoginContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  @media(max-width: 501px){
+    padding: 0px 20px;
+  }
 `;
 
 export const InputTitle = styled.p`
@@ -109,6 +120,9 @@ export const SignupContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  @media(max-width: 501px){
+    padding: 0px 20px;
+  }
 `;
 
 export const ErrorMessage = styled.div`
