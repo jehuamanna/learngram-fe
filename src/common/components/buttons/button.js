@@ -30,8 +30,9 @@ const StyledButton = styled.button`
   background-color: ${({ disabled }) => disabled ? "gray" : theme.background};
   color: ${({ color }) => color ? color : "white"};
   font-size: 25px;
-  border-radius: 4px;
-  margin: 57px 0px 30px 0px;
+  font-weight: 700;
+  border-radius: 10px;
+  margin: 57px 0px 15px 0px;
   cursor: ${({ disabled }) => disabled ? "not-allowed" : "pointer"};
   height: 70px;
   display: flex;
@@ -39,6 +40,9 @@ const StyledButton = styled.button`
   align-items: center;
   @media(max-height: 730px){
     margin: 22px 0px 0px 0px;
+    height: 60px;
+    font-size: 22px;
+    width: 160px;
   }
   
 `;

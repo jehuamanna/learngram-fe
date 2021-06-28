@@ -68,7 +68,8 @@ export const CompanyName= styled.p`
 export const TabContainer = styled.div`
   display: flex;
   height: 75px;
-  font-size: 40px;
+  font-size: 32px;
+  padding-bottom: 13px;
   @media(max-width: 501px){
     font-size: 24px;
     height: 50px;
@@ -126,6 +127,7 @@ export const Input = styled.input`
   }
   @media(max-height: 730px){
     height: 45px;
+    font-size: 22px;
   }
 `;
 
