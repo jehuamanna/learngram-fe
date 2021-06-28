@@ -85,6 +85,9 @@ export const LoginContainer = styled.div`
 export const InputTitle = styled.p`
   font-size: 30px;
   margin: 10px 0px;
+  @media(max-width: 501px){
+    font-size: 24px;
+  }
 `;
 
 export const Input = styled.input`
@@ -95,6 +98,9 @@ export const Input = styled.input`
   outline: none;
   font-size: 25px;
   padding-left: 20px;
+  @media(max-width: 501px){
+    font-size: 22px;
+  }
 `;
 
 export const ButtonContainer = styled.div`
