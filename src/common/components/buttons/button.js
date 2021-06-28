@@ -38,7 +38,7 @@ const StyledButton = styled.button`
   justify-content: center;
   align-items: center;
   @media(max-height: 730px){
-    margin: 0px 0px 0px 0px;
+    margin: 22px 0px 0px 0px;
   }
   
 `;
