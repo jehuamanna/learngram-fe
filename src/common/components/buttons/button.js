@@ -34,13 +34,14 @@ const StyledButton = styled.button`
   border-radius: 10px;
   margin: 57px 0px 15px 0px;
   cursor: ${({ disabled }) => disabled ? "not-allowed" : "pointer"};
-  height: 70px;
+  height: 55px;
   display: flex;
   justify-content: center;
   align-items: center;
+  border: none;
   @media(max-height: 730px){
     margin: 22px 0px 0px 0px;
-    height: 60px;
+    height: 50px;
     font-size: 22px;
     width: 160px;
   }

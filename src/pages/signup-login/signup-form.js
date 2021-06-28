@@ -190,7 +190,7 @@ export const SignupForm = (props) => {
           <ButtonContainer>
             <Button
               isLoading={isLoading}
-              text="Signup"
+              text="Sign Up"
               action={handleSignUp}
             />
           </ButtonContainer>

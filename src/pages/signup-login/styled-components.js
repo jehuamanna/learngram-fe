@@ -53,7 +53,7 @@ export const Container = styled.div`
 `;
 
 export const CompanyName= styled.p`
-  color: #4b5ef4;
+  color: #031fff;
   font-size: 60px;
   margin: 0;
   padding-bottom: 20px;
@@ -86,7 +86,7 @@ export const TabHeader = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  color: ${({ active }) => active ? theme.background : "black"};
+  color: ${({ active }) => active ? theme.background : "#4e4444"};
   font-weight: ${({ active }) => active ? "bold" : "normal"};
   cursor: pointer;
 `;
@@ -105,6 +105,7 @@ export const LoginContainer = styled.div`
 export const InputTitle = styled.p`
   font-size: 30px;
   margin: 10px 0px;
+  color: #4e4444;
   @media(max-width: 501px){
     font-size: 24px;
   }
