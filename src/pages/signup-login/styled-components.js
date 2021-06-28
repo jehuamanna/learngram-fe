@@ -45,7 +45,7 @@ export const Container = styled.div`
     width: 500px;
   }
   @media(max-height: 730px){
-    transform: translate(100px, 0px);
+    margin: auto 0px;
   }
   @media(max-height: 730px) and (max-width:501px){
     transform: translate(0px, 0px);
