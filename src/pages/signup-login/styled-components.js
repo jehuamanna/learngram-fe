@@ -10,7 +10,7 @@ export const OutsideContainer = styled.div`
 `;
 
 export const InsideContainer = styled.div`
-  background-color: ${theme.overlay};
+  background-color: rgb(200 206 255 / 42%);
   width: 100vw;
   height: 100vh;
 `;
