@@ -17,8 +17,8 @@ export const InsideContainer = styled.div`
 
 export const FormContainer = styled.div`
   padding-bottom: 30px;
-  width: 500px;
-  height: 500px;
+  max-width: 500px;
+  max-height: 500px;
   background-color: white;
   display: flex;
   flex-direction: column;
@@ -28,11 +28,14 @@ export const FormContainer = styled.div`
 `;
 
 export const Container = styled.div`
-  width: 550px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  transform: translate(100px, 75px);
+  transform: translate(0px, 75px);
+  width: 500px;
+  @media(min-width: 1025px){
+    transform: translate(100px, 75px);
+  }
 `;
 
 export const CompanyName= styled.p`
