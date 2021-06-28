@@ -59,9 +59,9 @@ export const CompanyName= styled.p`
   padding-bottom: 20px;
   text-align: center;
   @media(max-height: 730px){
-    margin-top: 10px;
+    margin-top: 0px;
     font-size: 36px;  
-    padding-bottom: 10px;
+    padding-bottom: 25px;
   }
 `;
 
