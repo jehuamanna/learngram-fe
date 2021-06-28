@@ -37,4 +37,8 @@ const StyledButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
+  @media(max-height: 730px){
+    margin: 0px 0px 0px 0px;
+  }
+  
 `;

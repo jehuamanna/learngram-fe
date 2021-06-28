@@ -25,6 +25,9 @@ export const FormContainer = styled.div`
   box-shadow: 5px 5px 10px #656882;
   transition: opacity 0.5s;
   opacity: 1;
+  @media(max-height: 730px){
+    padding-bottom: 20px;
+  }
 `;
 
 export const Container = styled.div`
@@ -36,9 +39,16 @@ export const Container = styled.div`
   @media(max-width: 501px){
     width: 100%;
   }
+
   @media(min-width: 1025px){
     transform: translate(100px, 75px);
     width: 500px;
+  }
+  @media(max-height: 730px){
+    transform: translate(100px, 0px);
+  }
+  @media(max-height: 730px) and (max-width:501px){
+    transform: translate(0px, 0px);
   }
 `;
 
@@ -48,6 +58,11 @@ export const CompanyName= styled.p`
   margin: 0;
   padding-bottom: 20px;
   text-align: center;
+  @media(max-height: 730px){
+    margin-top: 10px;
+    font-size: 36px;  
+    padding-bottom: 10px;
+  }
 `;
 
 export const TabContainer = styled.div`
@@ -55,6 +70,10 @@ export const TabContainer = styled.div`
   height: 75px;
   font-size: 40px;
   @media(max-width: 501px){
+    font-size: 24px;
+    height: 50px;
+  }
+  @media(max-height: 730px){
     font-size: 24px;
     height: 50px;
   }
@@ -88,6 +107,10 @@ export const InputTitle = styled.p`
   @media(max-width: 501px){
     font-size: 24px;
   }
+  @media(max-height: 730px){
+    margin-top: 20px;
+    font-size: 22px;
+  }
 `;
 
 export const Input = styled.input`
@@ -100,6 +123,9 @@ export const Input = styled.input`
   padding-left: 20px;
   @media(max-width: 501px){
     font-size: 22px;
+  }
+  @media(max-height: 730px){
+    height: 45px;
   }
 `;
 
@@ -118,7 +144,7 @@ export const ErrorContainer = styled.div`
 `;
 
 export const SuccessIcon = styled.img`
-  margin: 0 20px ${(props) => props.login ? "0px" : "15px"} 0;
+  margin: 0 20px ${(props) => props.login ? "0px" : "8px"} 0;
 `;
 
 export const SignupContainer = styled.div`
@@ -135,6 +161,9 @@ export const ErrorMessage = styled.div`
   width: 100%;
   height: 20px;
   margin-top: 5px;
+  @media(max-height: 730px){
+    height:10px;
+  }
 `;
 
 export const ErrorDiv = styled.div`
@@ -142,6 +171,9 @@ export const ErrorDiv = styled.div`
   color: white;
   padding: 5px 20px;
   background-color: ${theme.background};
+  @media(max-height: 730px){
+    padding: 2px 20px;
+  }
 `;
 
 export const Spinner = styled.div`
